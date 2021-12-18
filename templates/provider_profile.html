@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+
+{% block title %}
+    {{ provider.user.first_name }} {{ provider.user.last_name }} Profile
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ provider.user.first_name }} {{ provider.user.last_name }} Profile</h1>
+                <h2>{{ provider.rating }}</h2>
+            </div>
+        </div>
+    </div>
+    {% csrf_token %}
+    <div class="container">
+        <h2>Reviews</h2>
+        {% if not exists %}
+            <form method="POST" action="{% url 'handy:provider-profile' provider.id%}">
+            {% csrf_token %}
+                {{ form.as_p }}
+            <input type="submit" value="Submit">
+            </form>
+
+        {% endif %}
+        {% for feedback in feedbacks %}
+            {{ feedback.author }}{{ feedback.rating }}
+            {{ feedback.text }}
+            {{ feedback.date }}
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

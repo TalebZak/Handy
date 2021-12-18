@@ -35,16 +35,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'rest_framework',
     'handyapi',
     'storages',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'rest_auth',
-    'rest_auth.registration',
-    'rest_framework.authtoken',
+    'phonenumber_field',
+    'phone_field',
+    'django_unicorn',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Handy.urls'
+
 
 TEMPLATES = [
     {
@@ -105,17 +101,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-}
-SITE_ID = 1
-AUTH_USER_MODEL = 'handyapi.User'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -156,3 +141,11 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'handyapi.User'
+LOGOUT_REDIRECT_URL = 'handy:login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'HandyCompanyTech@gmail.com'
+EMAIL_HOST_PASSWORD = 'sasoriat1'

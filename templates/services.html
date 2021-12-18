@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block title %}{{ _('Services') }}{% endblock %}
+{% block body %}
+{% for service in service_list %}
+    <a href="{% url 'handy:service-detail' service.id %}">{{ service.title }}</a>
+{% endfor %}
+{% if is_paginated %}
+    <div class="pagination">
+        {% if paginator.has_previous %}
+            <a href="?page={{ paginator.previous_page_number }}">&laquo; {{ _('Previous') }}</a>
+        {% endif %}
+        {% for page in paginator.page_range %}
+            {% if page == paginator.page_number %}
+                <span>{{ page }}</span>
+            {% else %}
+                <a href="?page={{ page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if paginator.has_next %}
+            <a href="?page={{ paginator.next_page_number }}">{{ _('Next') }} &raquo;</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+
+{% endblock %}

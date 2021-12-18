@@ -7,11 +7,12 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-
+from phone_field import PhoneField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password, first_name, last_name, phone, city
+    def create_user(self, email, password, first_name, last_name, phone, city
                     , is_active=True, is_admin=False, is_staff=False, is_superuser=False):
         if not email:
             raise ValueError('Users must have an email address')
@@ -26,7 +27,6 @@ class UserManager(BaseUserManager):
         if not city:
             raise ValueError('Users must have a city')
         user = self.model(
-            username=username,
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
@@ -41,7 +41,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password, first_name, last_name, phone, city):
+    def create_superuser(self, email, password, first_name, last_name, phone, city):
         if not email:
             raise ValueError('Users must have an email address')
         if not password:
@@ -55,7 +55,6 @@ class UserManager(BaseUserManager):
         if not city:
             raise ValueError('Users must have a city')
         user = self.model(
-            username=username,
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
@@ -79,18 +78,23 @@ class User(AbstractBaseUser):
         (ADMIN, _('Admin User')),
         (STAFF, _('Staff User')),
     )
-    username = models.CharField(max_length=50, unique=True, null=False, blank=False)
     email = models.EmailField(max_length=255, unique=True, null=False, blank=False)
     first_name = models.CharField(max_length=50, null=False, blank=False)
     last_name = models.CharField(max_length=50, null=False, blank=False)
-    phone = models.CharField(max_length=50, null=False, blank=False)
-    city = models.CharField(max_length=50, null=False, blank=False)
+    phone = PhoneField(blank=False, null=False, help_text='Contact phone number')
+    CITIES = (
+        ('Bogor', 'Bogor'),
+        ('Depok', 'Depok'),
+        ('Jakarta', 'Jakarta'),
+        ('Tangerang', 'Tangerang'),
+    )
+    city = models.CharField(max_length=50, choices=CITIES, null=False, blank=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone', 'city']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone', 'city']
     USER_TYPES_CHOICES = (
         (1, 'customer'),
         (2, 'provider'),
@@ -108,13 +112,14 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+    # save method that will be called when saving the user and uses create_user method from UserManager
 
 
 # create a class customer extending user model
 class Customer(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='customer')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer')
+
     # add a field for customer's address
-    address = models.CharField(max_length=255, null=False, blank=False)
 
     # before customer is saved, a user with the base data is created then the customer is saved
 
@@ -124,7 +129,7 @@ class Customer(models.Model):
 
 # create a class Provider extending user model with a rating
 class Provider(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='provider')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='provider')
     # add a field for provider's rating
     rating = models.FloatField(default=0.0)
 
@@ -142,24 +147,26 @@ class Category(models.Model):
 
 
 class Service(models.Model):
-    title = models.CharField(max_length=30, unique=True)
-    price = models.IntegerField(default=0)
-    description = models.CharField(max_length=100)
+    title = models.CharField(max_length=30, null=False, blank=False)
+    price = models.IntegerField(default=0, null=False, blank=False)
+    description = models.TextField(max_length=500, null=False, blank=False)
     image = models.ImageField(upload_to='service_images', blank=True)
     taken = models.BooleanField(default=False)
+    address = models.TextField(max_length=500, null=False, blank=False)
     # settable day
     day = models.DateField(default=timezone.now)
     author = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='services')
-
+    posted_at = models.DateTimeField(default=timezone.now)
     # categories that we can choose one from like Cleaning, plumbing
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
     # method that would add 50 to price if the day is the same as today and the service did not exist before and save the change to database once saved
     def save(self, *args, **kwargs):
-        if self.day == timezone.now().date() and not Service.objects.get(pk=self.pk):
+        if self.day == timezone.now().date():
             self.price += 50
         super(Service, self).save(*args, **kwargs)
 
@@ -179,7 +186,9 @@ class Comment(models.Model):
     date = models.DateTimeField(default=timezone.now)
     new_price = models.IntegerField(default=0)
     # comment status
+    posted_at = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=50, choices=CommentStatus.choices, default=CommentStatus.PENDING)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.text
@@ -188,22 +197,34 @@ class Comment(models.Model):
     # the price of the service will be changed to the new price and other comments will be rejected
     def save(self, *args, **kwargs):
         if self.status == CommentStatus.ACCEPTED:
-            self.service.price = self.new_price
-            self.service.save()
-            Comment.objects.filter(service=self.service).exclude(id=self.id).update(status=CommentStatus.REJECTED)
-            # set taken to true
+            self.service.price = self.new_price-50
             self.service.taken = True
+            self.service.save()
+            Comment.objects.filter(
+                service=self.service).exclude(id=self.id).update(status=CommentStatus.REJECTED
+            )
+            # set taken to true
+
         super(Comment, self).save(*args, **kwargs)
-        # once saved, an acceptance will be created that would refer to the comment and save it to the database
-
-        acceptance = Acceptance.objects.create(comment=self)
-        acceptance.save()
 
 
-class Acceptance(models.Model):
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    service_image = models.ImageField(upload_to='service_images', blank=True, null=True)
-    performance_rating = models.IntegerField(default=0)
+class Feedback(models.Model):
+    text = models.TextField(max_length=500)
+    author = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='feedbacks')
+    recipient = models.ForeignKey(Provider, on_delete=models.CASCADE, related_name='feedback')
+    rating = models.IntegerField(default=0, null=False, blank=False,
+                                 validators=[MaxValueValidator(10), MinValueValidator(1)])
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.comment.text
+        return self.text
+
+    # when saved the rating of the provider will be updated
+    def save(self, *args, **kwargs):
+
+        self.recipient.rating = (self.recipient.rating * self.recipient.feedback.count() + self.rating) / (
+                self.recipient.feedback.count() + 1)
+        self.recipient.save()
+        super(Feedback, self).save(*args, **kwargs)
+
+

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class HandyapiConfig(AppConfig):
+class HandyConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'handyapi'
+    name = 'handy'
