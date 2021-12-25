@@ -1,26 +1,109 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Handy{% endblock title %}</title>
-    <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-        crossorigin="anonymous">
-</head>
+
+{% block title %}Handy{% endblock title %}
+
 
 {% block body %}
-    {% if user.is_authenticated %}
-        <h1>Hello, {{ user.first_name }}!</h1>
-        <p>You're logged in.</p>
-        <p>You are a {{ user.user_type }}</p>
-
-    {% else %}
-        <h1>Hello, world!</h1>
-
-    {% endif %}
+<div class="handy-header">
+    <div class="container">
+      <div class="row">
+        <div class="welcome-text header-text col-md-6" style="padding-top: 200px;">
+          <h2>Welcome to<span class="brand"> Handy</span></h2>
+          <p>A platform where we can make your life easier</p>
+          <a href="/login"><button type="button" class="header-button btn btn-light" style="margin-right: 16px;">Register</button></a>
+          <a href="/register"><button type="button" class="header-button btn btn-dark" style="margin-right: 16px;">Login</button></a>
+        </div>
+        <div class="col-md-6">
+          <img class="header-image" src="https://ybhcleaningservices.com/wp-content/uploads/2019/06/cleaning-service-1.png" alt="" height="500px" width="500px">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="second-div container" style="  margin-top: 30px;
+  margin-bottom: 30px;">
+    <div class="row">
+      <div class="col-md-6">
+        <img class="getstarted-image" src="https://www.rbcclean.com/wp-content/themes/rbc-cleaning/images/cleanService.png" height="450px" width="570px">
+      </div>
+      <div class="getstarted-text col-md-6" style="padding-left: 50px;
+  padding-top: 180px;">
+        <h3>Best Quality Of Work</h3>
+        <p>At Handy we make sure that the quality of the services offered is at its highest. From Plumbers, to personal cooks, you only need to request and wait for them to come for you.</p>
+        <a href="#"><button type="button" class="btn btn-dark">Get Started</button></a>
+      </div>
+    </div>
+  </div>
+  <div class="website-mission" style="background-color: #C8C6C6;
+  text-align: center;
+  color: #243c4f;
+  font-family: "Monserrat";">
+    <div id="mission-carousel" class="carousel slide" data-ride="faulse">
+      <div class="carousel-inner">
+        <div class="carousel-item active" style="  padding: 7% 15%;
+  margin-top: 50px;
+  margin-bottom: 50px;">
+          <div class="container">
+            <div class="row">
+              <div class="mission-title col-md-6" style="  font-family: "Bitter";
+  font-style: italic;">
+                <h1>Positive Impact</h1>
+              </div>
+              <div class="mission-text col-md-6" style="  margin-top: 10px;
+  font-family: "Raleway";">
+                <p>Making a positive impact by helping artisans increase their revenue</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item" style="  padding: 7% 15%;
+  margin-top: 50px;
+  margin-bottom: 50px;">
+          <div class="container">
+            <div class="row">
+              <div class="mission-title col-md-6" style="  font-family: "Bitter";
+  font-style: italic;">
+                <h1>Empowering Artisans</h1>
+              </div>
+              <div class="mission-text col-md-6" style="  margin-top: 10px;
+  font-family: "Raleway";">
+                <p>Empowering them by collaborating or purchasing their goods</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item" style="  padding: 7% 15%;
+  margin-top: 50px;
+  margin-bottom: 50px;">
+          <div class="container">
+            <div class="row">
+              <div class="mission-title col-md-6" style="  font-family: "Bitter";
+  font-style: italic;">
+                <h1>Contributing to the UN SDGs</h1>
+              </div>
+              <div class="mission-text col-md-6" style="  margin-top: 10px;
+  font-family: "Raleway";">
+                <p>Helping the world become a better place by achieving the UN globale goals</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#mission-carousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </a>
+      <a class="carousel-control-next" href="#mission-carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </a>
+    </div>
+  </div>
+  <div class="footer" style="  padding-top: 100px;
+  padding-bottom: 100px; background-colo">
+    <h2 class="inline footer-h2" style="  display: inline-block; padding-left: 70px;">Contact Us</h2>
+    <i class="inline in-fb fab fa-facebook fa-2x" style="  display: inline-block; float: right;   padding-right: 70px;
+  padding-left: 15px;"></i>
+    <i class="inline in-insta fab fa-instagram fa-2x" style="  display: inline-block;   float: right;   padding-left: 15px;"></i>
+    <i class="inline in-g fab fa-google-plus fa-2x" style="  display: inline-block;   float: right;"></i>
+  </div>
 {% endblock %}

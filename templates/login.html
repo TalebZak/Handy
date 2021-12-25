@@ -3,13 +3,30 @@
     Login
 {% endblock %}
 {% block body %}
-    <form method="POST">{% csrf_token %}
-
+    <form method="POST" style="
+    margin-left: 500px;
+    margin-top: 150px;
+">{% csrf_token %}
+<h1 style="
+  font-size: 40px;
+  margin-bottom: 5px;
+  padding: 12px 0;
+  font-family: 'Roboto Slab';
+  font-weight: 100;">Login</h1>
 <!-- form variable -->
- {{ form.as_p }}
+<div style="color: #8E806A; font-size: 25px;">
+  {{ form.username.label }}
+  </div>
+  <div class="">
+   {{ form.username }}
+  </div>
 
-  <input type="submit" name="submit">
+ <div class="" style="color: #8E806A; font-size: 25px;">
+   {{ form.password.label }}
+   </div>
+   <div class="">
+        {{ form.password }}
+   </div>
+  <input type="submit" name="submit" style="margin-top: 11px;" value="Login">
 </form>
 {% endblock %}
-
-

@@ -1,28 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-    crossorigin="anonymous">
-    <title>Demo Registration</title>
-</head>
-<body>
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block title %}
+  Registation
+{% endblock %}
+{% block body %}
 
     <section>
         <div class="container">
           <div class="row">
             <div class="col-md-6 mx-auto">
               <div class="card">
-                <div class="card-header text-black">
-                  <h2>Register</h2>
+                <div class="card-header text-black" style="background-color: #fff; border-bottom: 0;">
+                  <h2 style="
+                    font-size: 40px;
+                    margin-bottom: 5px;
+                    padding: 12px 0;
+                    font-family: 'Roboto Slab';
+                    font-weight: 100;">Register</h2>
                 </div>
                 <div class="card-body">
                     <form action="{% url 'handy:register' %}" method="POST">
                       {% csrf_token %}
-                         {{ form.as_p }}
-                             <input type="submit" value="Register" class="btn btn-block btn-primary">
+                      <p style="color: #8E806A; font-size: 25px;">{{ form.email.label}}
+                      </p>
+                      <p>
+                        {{ form.email}}
+                      </p>
+
+                      <p style="color: #8E806A; font-size: 25px;">
+                        {{ form.last_name.label}}
+
+                      </p>
+                      <p>{{ form.last_name}}</p>
+                      <p>
+                        <label for="id_phone_0">Phone</label>
+                        <input type="text" name="phone_0" size="13" required="" id="id_phone_0" style="
+                        margin-left: 24px;">
+                        <span class="phone-field-ext">ext.</span>
+                        <input type="text" name="phone_1" size="4" id="id_phone_1">
+
+                      </p>
+                      <div>
+                        <p>{{ form.city.label}}</p>
+                        {{ form.city}}
+                      </div>
+                      <div>
+                        <p>  {{ form.password1.label}}</p>
+
+                        {{ form.password1}}
+                      </div>
+                    <ul>
+                      <li>Your password can’t be too similar to your other personal information.</li>
+                      <li>Your password must contain at least 8 characters.</li>
+                      <li>Your password can’t be a commonly used password.</li>
+                      <li>Your password can’t be entirely numeric.</li>
+                    </ul>
+                    <p>
+                      {{ form.password2.label}}
+                      {{ form.password2}}
+                    </p>
+                    <p>
+                      <label for="id_user_type_0">User type:</label>
+                    </p>
+                    <ul>
+                      <li><label for="id_user_type_0"><input type="radio" name="user_type" value="1" required="" id="id_user_type_0">
+ customer</label></li>
+                      <li><label for="id_user_type_1"><input type="radio" name="user_type" value="2" required="" id="id_user_type_1">
+ provider</label>
+                      </li>
+                    </ul>
+                             <input type="submit" value="Register" class="btn btn-block" style="background-color: #8E806A; border-color: #8E806A;">
                            </div>
                     </form>
                  </div>
@@ -33,5 +82,4 @@
         </div>
       </section>
 
-</body>
-</html>
+{% endblock %}
