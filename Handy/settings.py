@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-9p_s$cw8wb+383ylt$ok@$=9hpr09p37uf&zm5nnn(u3w*llxd
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+import os
+import django_heroku
 ALLOWED_HOSTS = ['handyproject.herokuapp.com']
 
 # Application definition
