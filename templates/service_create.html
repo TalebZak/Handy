@@ -3,12 +3,40 @@
 {% block title %}{{ _('Create Service') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ _('Create Service') }}</h1>
+    <div class="container">
+      <div class="row">
+        <div class="welcome-text header-text col-md-6" style="padding-top: 20px;">
+    <h1 style="
+      font-size: 40px;
+      margin-bottom: 5px;
+      color: #533535;
+      padding: 12px 0;
+      font-family: 'Roboto Slab';
+      font-weight solid;">{{ _('Create Service') }}</h1>
     <form method="POST" enctype='multipart/form-data' action="{% url 'handy:service' %}">
         <div class="form-group">
             {% csrf_token %}
-            {{ form.as_p }}
+            <p style="color: #8E806A; font-size: 25px;">{{ form.title.label}}
+            {{ form.title}}</p>
+            <p style="color: #8E806A; font-size: 25px;">{{ form.description.label}}
+            {{ form.description}}</p>
+            <p style="color: #8E806A; font-size: 25px;">{{ form.price.label}}
+            {{ form.price}}</p>
+            <p style="color: #8E806A; font-size: 25px;">{{ form.image.label}}
+            {{ form.image}}</p>
+            <p style="color: #8E806A; font-size: 25px;">{{ form.category.label}}
+            {{ form.category}}</p>
+            <p style="color: #8E806A; font-size: 25px;">{{ form.day.label}}
+            {{ form.day}}</p>
+            <p style="color: #8E806A; font-size: 25px;">{{ form.address.label}}
+            {{ form.address}}</p>
         </div>
-        <button type="submit" class="btn btn-primary">{{ _('Create') }}</button>
+        <button type="submit" class="btn btn-primary" style="background-color: #8E806A; border-color: #8E806A;">{{ _('Create') }}</button>
     </form>
+        </div>
+        <div class="col-md-6">
+          <img class="header-image" src="https://ybhcleaningservices.com/wp-content/uploads/2019/06/cleaning-service-1.png" alt="" height="500px" width="500px">
+        </div>
+      </div>
+    </div>
 {% endblock %}

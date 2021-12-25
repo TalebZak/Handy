@@ -16,9 +16,10 @@
                   <h2 style="
                     font-size: 40px;
                     margin-bottom: 5px;
+                    color: #533535;
                     padding: 12px 0;
                     font-family: 'Roboto Slab';
-                    font-weight: 100;">Register</h2>
+                    font-weight solid;">Register</h2>
                 </div>
                 <div class="card-body">
                     <form action="{% url 'handy:register' %}" method="POST">
@@ -28,26 +29,30 @@
                       <p>
                         {{ form.email}}
                       </p>
+                      <p style="color: #8E806A; font-size: 25px;">
+                        {{ form.first_name.label}}
 
+                      </p>
+                      <p>{{ form.first_name}}</p>
                       <p style="color: #8E806A; font-size: 25px;">
                         {{ form.last_name.label}}
 
                       </p>
                       <p>{{ form.last_name}}</p>
                       <p>
-                        <label for="id_phone_0">Phone</label>
+                        <label for="id_phone_0" style="color: #8E806A; font-size: 25px;">Phone</label>
                         <input type="text" name="phone_0" size="13" required="" id="id_phone_0" style="
                         margin-left: 24px;">
-                        <span class="phone-field-ext">ext.</span>
+                        <span class="phone-field-ext" style="color: #8E806A; font-size: 25px;">ext.</span>
                         <input type="text" name="phone_1" size="4" id="id_phone_1">
 
                       </p>
                       <div>
-                        <p>{{ form.city.label}}</p>
+                        <p style="color: #8E806A; font-size: 25px;">{{ form.city.label}}</p>
                         {{ form.city}}
                       </div>
                       <div>
-                        <p>  {{ form.password1.label}}</p>
+                        <p style="color: #8E806A; font-size: 25px;">  {{ form.password1.label}}</p>
 
                         {{ form.password1}}
                       </div>
@@ -57,12 +62,12 @@
                       <li>Your password can’t be a commonly used password.</li>
                       <li>Your password can’t be entirely numeric.</li>
                     </ul>
-                    <p>
+                    <p style="color: #8E806A; font-size: 25px;">
                       {{ form.password2.label}}
                       {{ form.password2}}
                     </p>
                     <p>
-                      <label for="id_user_type_0">User type:</label>
+                      <label for="id_user_type_0" style="color: #8E806A; font-size: 25px;">User type:</label>
                     </p>
                     <ul>
                       <li><label for="id_user_type_0"><input type="radio" name="user_type" value="1" required="" id="id_user_type_0">
@@ -71,7 +76,7 @@
  provider</label>
                       </li>
                     </ul>
-                             <input type="submit" value="Register" class="btn btn-block" style="background-color: #8E806A; border-color: #8E806A;">
+                             <input type="submit" value="Register" class="btn btn-block btn-sm" style="background-color: #8E806A; border-color: #8E806A;">
                            </div>
                     </form>
                  </div>

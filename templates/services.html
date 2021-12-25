@@ -1,8 +1,36 @@
 {% extends 'layout.html' %}
 {% block title %}{{ _('Services') }}{% endblock %}
 {% block body %}
+<div class="" style="margin-left: 350px; margin-top: 30px;">
+  <h1 style="
+    margin-left: 3px;
+    color: #533535;
+">What do you need help with ?</h1>
+  <button type="button" class="btn btn-secondary" style="border-radius: 25px; margin-right: 20px;margin-top: 7px; background-color: #C7B198; color: #483434; border-color:#C7B198; font-weight: bold;">Plumbing</button>
+  <button type="button" class="btn btn-secondary" style="border-radius: 25px; margin-right: 20px;margin-top: 7px; background-color: #C7B198; color: #483434; border-color:#C7B198; font-weight: bold; ">Cleaning</button>
+  <button type="button" class="btn btn-secondary" style="border-radius: 25px; margin-right: 20px;margin-top: 7px; background-color: #C7B198; color: #483434; border-color:#C7B198; font-weight: bold; ">Cooking</button>
+  <button type="button" class="btn btn-secondary" style="border-radius: 25px; margin-right: 20px;margin-top: 7px; background-color: #C7B198; color: #483434; border-color:#C7B198; font-weight: bold; ">Assembly</button>
+  <button type="button" class="btn btn-secondary" style="border-radius: 25px; margin-right: 20px;margin-top: 7px; background-color: #C7B198; color: #483434; border-color:#C7B198; font-weight: bold; ">Electrical</button>
+  <div class="">
+    <button type="button" class="btn btn-secondary" style="
+    margin-left: 220px;
+    margin-top: 15px;
+    background-color: #483434;
+    border-color: #483434;
+    color: #C3B091;
+    font-weight: bold;
+"">Click to Request</button>
+  </div>
+</div>
+<div class="">
+  <h4 style="text-align: center; margin-top: 5px; color: #533535;">Request History</h4>
+</div>
 {% for service in service_list %}
-    <a href="{% url 'handy:service-detail' service.id %}">{{ service.title }}</a>
+<div class="card"  style="margin-top: 10px;">
+  <div class="card-body">
+      <a href="{% url 'handy:service-detail' service.id %}" style="margin-left: 20px;">{{ service.title }}</a>
+  </div>
+</div>
 {% endfor %}
 {% if is_paginated %}
     <div class="pagination">
